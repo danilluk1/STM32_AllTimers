@@ -13,8 +13,8 @@ namespace STM32_AllTimers_BL.Model {
         /// <param name="seconds">Время в секундах</param>
         /// <returns>секунды, переведённые в мс</returns>
         public static float ConvertSecondsToMs(float seconds) {
-            if (seconds <= 0) throw new ArgumentException("Количество секунд должно быть больше нуля.");
-            return seconds / 1000f;
+            if (seconds < 0) throw new ArgumentException("Количество секунд должно быть больше нуля.");
+            return seconds * 1000f;
         }
         /// <summary>
         /// Переводит заданное количество мс в секунды
@@ -22,8 +22,8 @@ namespace STM32_AllTimers_BL.Model {
         /// <param name="ms">Время в мс</param>
         /// <returns>мс, переведённые в секунды</returns>
         public static float ConvertMsToSeconds(float ms) {
-            if (ms <= 0) throw new ArgumentException("Количество мс должно быть больше нуля.");
-            return ms * 1000f;
+            if (ms < 0) throw new ArgumentException("Количество мс должно быть больше нуля.");
+            return ms / 1000f;
         }
     }
 }

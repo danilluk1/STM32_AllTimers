@@ -7,6 +7,7 @@ namespace STM32_AllTimers_BL.Model {
         private int inputfreq;
         private int prescaler;
         private int counterperiod;
+        private int ticksperseconds;
         /// <summary>
         /// Входная частота таймера в ГЦ.
         /// </summary>
@@ -49,11 +50,10 @@ namespace STM32_AllTimers_BL.Model {
         /// Формула расчёта: InputFrequency / (Prescaler + 1)
         /// </summary>
         public int TicksPerSecond {
-            get => counterperiod;
+            get => ticksperseconds;
             set {
-                if (value <= 0) throw new ArgumentException("TicksPerSeconds должен быть > 0");
-                counterperiod = value;
-                OnPropertyChanged("CounterPeriod");
+                ticksperseconds = value;
+                OnPropertyChanged("TicksPerSeconds");
             }
         }      
 
@@ -69,6 +69,7 @@ namespace STM32_AllTimers_BL.Model {
         ///</retval>
         ///</summary>
         public float CalculatePeriodMs() {
+            TicksPerSecond = InputFrequency / (Prescaler + 1);
             float periodinms = SecondsConverter.ConvertSecondsToMs((float)CounterPeriod / TicksPerSecond);
             return periodinms;
         }

@@ -3,10 +3,64 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:STM32_AllTimers_View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="500" Width="420" FontSize="16">
+    <Window.Resources>
+        <Style x:Key="TextBlockStyle">
+            <Setter Property="TextBlock.HorizontalAlignment" Value="Right"/>
+            <Setter Property="TextBlock.VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="TextBoxStyle">
+            <Setter Property="TextBox.HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="TextBox.VerticalAlignment" Value="Center"/>
+            <Setter Property="TextBox.Margin" Value="5,5,5,0"/>
+        </Style>
         
-    </Grid>
+    </Window.Resources>
+    <TabControl x:Name="btTabControl" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <TabItem x:Name="btTab">
+            <TabItem.Header>
+                <TextBlock Margin="3" Text="Basic Timer"/>
+            </TabItem.Header>
+            <TabItem.Content>
+                <Grid DataContext="{Binding BasicTimer}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Style="{StaticResource TextBlockStyle}" Text="Входная частота:"/>
+                    <TextBox Grid.Column="1" Grid.Row="0" TextChanged="TextBox_TextChanged" Style="{StaticResource TextBoxStyle}" Text="{Binding Path=InputFrequency, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <TextBlock Grid.Column="0" Grid.Row="1" Style="{StaticResource TextBlockStyle}" Text="Делитель:"/>
+                    <TextBox Grid.Column="1" Grid.Row="1" TextChanged="TextBox_TextChanged" Style="{StaticResource TextBoxStyle}" Text="{Binding Path=Prescaler, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource TextBlockStyle}" Text="Counter Period:"/>
+                    <TextBox Grid.Column="1" Grid.Row="2" TextChanged="TextBox_TextChanged" Style="{StaticResource TextBoxStyle}" Text="{Binding Path=CounterPeriod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <TextBlock Grid.Column="0" Grid.Row="4" Style="{StaticResource TextBlockStyle}" Text="Период таймера:"/>
+                    <TextBox x:Name="resultTextBox" Grid.Column="1" Grid.Row="4"   IsReadOnly="True" Margin="5,5,5,5" Style="{StaticResource TextBoxStyle}"/>
+                </Grid>
+            </TabItem.Content>
+        </TabItem>
+
+        <TabItem>
+            <TabItem.Header>
+                <TextBlock Text="General Timer"/>
+            </TabItem.Header>
+        </TabItem>
+
+        <TabItem>
+            <TabItem.Header>
+                <TextBlock Text="Advanced Timer"/>
+            </TabItem.Header>
+        </TabItem>
+
+    </TabControl>
 </Window>

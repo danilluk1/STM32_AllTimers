@@ -94,6 +94,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\STM32_AllTimers_BL\STM32_AllTimers_BL.csproj">
+      <Project>{33378289-62f1-4b14-90b4-711a5c1c9e1a}</Project>
+      <Name>STM32_AllTimers_BL</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
