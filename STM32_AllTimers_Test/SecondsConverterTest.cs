@@ -8,7 +8,6 @@ namespace STM32_AllTimers_Test {
         [TestMethod]
         public void ConvertSecondsToMsTest_WrongValueTest() {
             Assert.ThrowsException<ArgumentException>(() => SecondsConverter.ConvertSecondsToMs(-1));
-            Assert.ThrowsException<ArgumentException>(() => SecondsConverter.ConvertSecondsToMs(0));
         }
 
         [TestMethod]
@@ -20,7 +19,6 @@ namespace STM32_AllTimers_Test {
         [TestMethod]
         public void ConvertMsToSecondsTest_WrongValueTest() {
             Assert.ThrowsException<ArgumentException>(() => SecondsConverter.ConvertMsToSeconds(-1));
-            Assert.ThrowsException<ArgumentException>(() => SecondsConverter.ConvertMsToSeconds(0));
         }
 
         [TestMethod]

@@ -15,13 +15,5 @@ namespace STM32_AllTimers_Test {
 
             Assert.AreEqual(500, bt.CalculatePeriodMs());
         }
-
-        [TestMethod]
-        public void BasicTimerWrongParameters_Test() {
-            IBasicTimer bt = new BasicTimer();                   
-            Assert.ThrowsException<ArgumentException>(()=>bt.InputFrequency = 0);
-            Assert.ThrowsException<ArgumentException>(() => bt.Prescaler = 0);
-            Assert.ThrowsException<ArgumentException>(() => bt.CounterPeriod = 0);
-        }
     }
 }

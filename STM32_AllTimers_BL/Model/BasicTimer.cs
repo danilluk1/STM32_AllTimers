@@ -15,7 +15,6 @@ namespace STM32_AllTimers_BL.Model {
             get => inputfreq; 
             set
             {
-                if (value <= 0) throw new ArgumentException("Входная частота должна быть > 0"); 
                 inputfreq = value;
                 OnPropertyChanged("InputFrequency");
             }
@@ -28,7 +27,6 @@ namespace STM32_AllTimers_BL.Model {
         public int Prescaler {
             get => prescaler;
             set {
-                if (value <= 0) throw new ArgumentException("Делитель должен быть > 0");
                 prescaler = value;
                 OnPropertyChanged("Prescaler");
             }
@@ -40,7 +38,6 @@ namespace STM32_AllTimers_BL.Model {
         public int CounterPeriod {
             get => counterperiod;
             set {
-                if (value <= 0) throw new ArgumentException("Counter Period должен быть > 0");
                 counterperiod = value;
                 OnPropertyChanged("CounterPeriod");
             }
@@ -55,7 +52,32 @@ namespace STM32_AllTimers_BL.Model {
                 ticksperseconds = value;
                 OnPropertyChanged("TicksPerSeconds");
             }
-        }      
+        }
+
+        public string Error => throw new NotImplementedException();
+
+        public string this[string columnName] {
+            get {
+                string error = String.Empty;
+                switch (columnName) {
+                    case "InputFrequency":
+                    error = InputFrequency <= 0 ?
+                        "Входная частота должна быть больше 0 и меньше 100" : String.Empty;
+                    break;
+
+                    case "Prescaler":
+                    error = (Prescaler <= 0 || Prescaler >= 65535) ? 
+                        "Делитель должен находиться в пределах от 0 до 65535" : String.Empty;
+                    break;
+
+                    case "CounterPeriod":
+                    error = (CounterPeriod <= 0 || CounterPeriod >= 65535) ?
+                        "Период счётчика должен находиться в пределах от 0 до 65535" : String.Empty;
+                    break;
+                }
+                return error;
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
