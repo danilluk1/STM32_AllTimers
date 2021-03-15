@@ -5,13 +5,22 @@ using System.Windows.Input;
 
 namespace STM32_AllTimers_BL.ViewModel {
     public class MainWindowViewModel : INotifyPropertyChanged {
-        private BasicTimer basicTimer;
+        private IBasicTimer basicTimer;
+        private IGeneralTimer generalTimer;
 
-        public BasicTimer BasicTimer {
+        public IBasicTimer BasicTimer {
             get => basicTimer; 
             set {
                 basicTimer = value;
                 OnPropertyChanged("BasicTimer");
+            }
+        }
+
+        public IGeneralTimer GeneralTimer {
+            get => generalTimer;
+            set {
+                generalTimer = value;
+                OnPropertyChanged("GeneralTimer");
             }
         }
 

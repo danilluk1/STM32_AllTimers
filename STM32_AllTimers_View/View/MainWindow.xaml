@@ -13,9 +13,13 @@
         <Style x:Key="TextBoxStyle">
             <Setter Property="TextBox.HorizontalAlignment" Value="Stretch"/>
             <Setter Property="TextBox.VerticalAlignment" Value="Center"/>
-            <Setter Property="TextBox.Margin" Value="5,5,5,0"/>
+            <Setter Property="TextBox.Margin" Value="5,5,5,5"/>
         </Style>
-        
+
+        <Style x:Key="ComboBoxStyle">
+            <Setter Property="ComboBox.Margin" Value="5,5,5,5"/>
+        </Style>
+
     </Window.Resources>
     <TabControl x:Name="btTabControl" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <TabItem x:Name="btTab">
@@ -108,6 +112,7 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
                             <TextBlock Grid.Column="0" Grid.Row="0" Style="{StaticResource TextBlockStyle}" Text="Входная частота:"/>
@@ -116,7 +121,7 @@
                             </TextBox>
 
                             <TextBlock Grid.Column="0" Grid.Row="1" Style="{StaticResource TextBlockStyle}" Text="Режим счёта:"/>
-                            <ComboBox x:Name="gtMode" Grid.Column="1" Grid.Row="1">
+                            <ComboBox x:Name="gtMode" Style="{StaticResource TextBoxStyle}" Grid.Column="1" Grid.Row="1">
                                 <TextBlock FontSize="12" Text="UP"/>
                                 <TextBlock FontSize="12" Text="DOWN"/>
                             </ComboBox>
@@ -126,9 +131,10 @@
                                 
                             </TextBox>
 
+                            <Line />
                             <TextBlock Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left"  Text="PWM Settings:"/>
                             <TextBlock Grid.Column="0" Grid.Row="5" Style="{StaticResource TextBlockStyle}" Text="Mode:"/>
-                            <ComboBox x:Name="gtPWMMode" Grid.Column="1" Grid.Row="5">
+                            <ComboBox x:Name="gtPWMMode"  Style="{StaticResource TextBoxStyle}" Grid.Column="1" Grid.Row="5">
                                 <TextBlock FontSize="12" Text="Mode 1"/>
                                 <TextBlock FontSize="12" Text="Mode 2"/>
                             </ComboBox>
@@ -137,8 +143,20 @@
 
                             </TextBox>
 
+                            <TextBlock Grid.Column="0" Grid.Row="7" Style="{StaticResource TextBlockStyle}"  Text="Битность:"/>
+                            <CheckBox x:Name="GTbitsCheckBocks"  Style="{StaticResource TextBoxStyle}" Grid.Column="4" Grid.Row="7" Content="32 Бит"/>
+                            
+                            <TextBlock Grid.Column="0" Grid.Row="8" Style="{StaticResource TextBlockStyle}"  Text="Fast Mode:"/>
+                            <ComboBox x:Name="gtFastMode" Style="{StaticResource TextBoxStyle}" Grid.Column="1" Grid.Row="8">
+                                <TextBlock FontSize="12" Text="Disabled"/>
+                                <TextBlock FontSize="12" Text="Enabled"/>
+                            </ComboBox>
 
-                            <CheckBox x:Name="GTbitsCheckBocks" Grid.Column="4" Grid.Row="7" Content="32 Бит"/>
+                            <TextBlock Grid.Column="0" Grid.Row="9" Style="{StaticResource TextBlockStyle}"  Text="CH Polarity:"/>
+                            <ComboBox x:Name="gtPolaritycb"  Style="{StaticResource TextBoxStyle}" Grid.Column="1" Grid.Row="9">
+                                <TextBlock FontSize="12" Text="High"/>
+                                <TextBlock FontSize="12" Text="Low"/>
+                            </ComboBox>
                         </Grid>
                     </TabItem.Content>
                 </TabItem>

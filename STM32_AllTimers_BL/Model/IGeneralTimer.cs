@@ -5,8 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace STM32_AllTimers_BL.Model {
-    interface IGeneralTimer : ISTMTimer {
+    public interface IGeneralTimer : ISTMTimer {
         float CalculatePeriodMs();
         int CalculatePWM();
+
+        bool Is32Bits { get; set; }
+
+        PWMMode Mode { get; set; }
+
+        int Pulse { get; set; }
+
+        bool IsFastMode { get; set; }
+
+        CHPolarity Polarity { get; set; }
+
+        CounterMode CounterMode { get; set; }
+
+
     }
 }
