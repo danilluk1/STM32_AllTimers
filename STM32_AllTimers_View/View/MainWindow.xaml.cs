@@ -1,4 +1,5 @@
-﻿using STM32_AllTimers_BL.ViewModel;
+﻿using STM32_AllTimers_BL.Model;
+using STM32_AllTimers_BL.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace STM32_AllTimers_View {
             DataContext = mwvm;
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e) {
+        private void btTextBox_TextChanged(object sender, TextChangedEventArgs e) {
             float result = mwvm.BasicTimer.CalculatePeriodMs();
             resultTextBox.Text = $"{result}";
         }

@@ -16,6 +16,7 @@ namespace STM32_AllTimers_BL.Model {
         private int prescaler;
         private int counterperiod;
         private int ticksperseconds;
+        private int completion;
         /// <summary>
         /// Входная частота таймера в ГЦ.
         /// </summary>
@@ -60,7 +61,12 @@ namespace STM32_AllTimers_BL.Model {
                 OnPropertyChanged("TicksPerSeconds");
             }
         }
-        public string this[string columnName] => throw new NotImplementedException();
+        public string this[string columnName] {
+            get {
+                string error = String.Empty;
+                return error;
+            }
+        }
 
         public bool Is32Bits {
             get => is32bits;
@@ -112,6 +118,14 @@ namespace STM32_AllTimers_BL.Model {
 
         public string Error => throw new NotImplementedException();
 
+        public int Completion {
+            get => completion;
+            set {
+                completion = value;
+                OnPropertyChanged("Completion");
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void OnPropertyChanged([CallerMemberName]string prop = "") {
@@ -124,8 +138,15 @@ namespace STM32_AllTimers_BL.Model {
             return periodinms;
         }
 
-        public int CalculatePWM() {
-            throw new NotImplementedException();
+        public void CalculatePWM() {
+            int completion;
+            if (Mode == PWMMode.Mode_1) {
+                completion = CounterPeriod / Pulse;
+            }
+            else {
+                completion = 100 - CounterPeriod / Pulse;
+            }
+            Completion = completion;
         }
     }
 }

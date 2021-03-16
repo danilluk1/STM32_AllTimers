@@ -3,8 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="420" FontSize="16">
+        Title="MainWindow" Height="500" Width="420" FontSize="13">
     <Window.Resources>
         <Style x:Key="TextBlockStyle">
             <Setter Property="TextBlock.HorizontalAlignment" Value="Right"/>
@@ -40,7 +41,7 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Column="0" Grid.Row="0" Style="{StaticResource TextBlockStyle}" Text="Входная частота:"/>
-                    <TextBox Grid.Column="1" Grid.Row="0" TextChanged="TextBox_TextChanged" Style="{StaticResource TextBoxStyle}">
+                    <TextBox Grid.Column="1" Grid.Row="0" TextChanged="btTextBox_TextChanged" Style="{StaticResource TextBoxStyle}">
                         <TextBox.Text>
                             <Binding Path="InputFrequency" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
@@ -51,7 +52,7 @@
                     </TextBox>
 
                     <TextBlock Grid.Column="0" Grid.Row="1" Style="{StaticResource TextBlockStyle}" Text="Делитель:"/>
-                    <TextBox Grid.Column="1" Grid.Row="1" TextChanged="TextBox_TextChanged" Style="{StaticResource TextBoxStyle}">
+                    <TextBox Grid.Column="1" Grid.Row="1" TextChanged="btTextBox_TextChanged" Style="{StaticResource TextBoxStyle}">
                         <TextBox.Text>
                             <Binding Path="Prescaler" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
@@ -61,7 +62,7 @@
                         </TextBox.Text>
                     </TextBox>
                     <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource TextBlockStyle}" Text="Counter Period:"/>
-                    <TextBox Grid.Column="1" Grid.Row="2" TextChanged="TextBox_TextChanged" Style="{StaticResource TextBoxStyle}">
+                    <TextBox Grid.Column="1" Grid.Row="2" TextChanged="btTextBox_TextChanged" Style="{StaticResource TextBoxStyle}">
                         <TextBox.Text>
                             <Binding Path="CounterPeriod" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
@@ -97,7 +98,7 @@
                         <TextBlock Text="PWM"/>
                     </TabItem.Header>
                     <TabItem.Content>
-                        <Grid>
+                        <Grid DataContext="{Binding GeneralTimer}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="1*"/>
@@ -113,50 +114,133 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto" MinHeight="60"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Grid.Column="0" Grid.Row="0" Style="{StaticResource TextBlockStyle}" Text="Входная частота:"/>
+                            <TextBlock Grid.Column="0" Grid.Row="0"  Style="{StaticResource TextBlockStyle}" Text="Входная частота:"/>
                             <TextBox Grid.Column="1" Grid.Row="0" Style="{StaticResource TextBoxStyle}">
-                                
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="TextChanged">
+                                        <i:InvokeCommandAction
+                                            Command="{Binding GtCalculatePWMCommand}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <TextBox.Text>
+                                    <Binding Path="InputFrequency" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <DataErrorValidationRule/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
                             </TextBox>
 
                             <TextBlock Grid.Column="0" Grid.Row="1" Style="{StaticResource TextBlockStyle}" Text="Режим счёта:"/>
                             <ComboBox x:Name="gtMode" Style="{StaticResource TextBoxStyle}" Grid.Column="1" Grid.Row="1">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction
+                                            Command="{Binding GtModeChangeCommand}"
+                                            CommandParameter="SelectedItem"/>
+                                        <i:InvokeCommandAction
+                                            Command="{Binding GtCalculatePWMCommand}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                                 <TextBlock FontSize="12" Text="UP"/>
                                 <TextBlock FontSize="12" Text="DOWN"/>
                             </ComboBox>
 
                             <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource TextBlockStyle}" Text="Counter Period:"/>
                             <TextBox Grid.Column="1" Grid.Row="2" Style="{StaticResource TextBoxStyle}">
-                                
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="TextChanged">
+                                        <i:InvokeCommandAction
+                                            Command="{Binding GtCalculatePWMCommand}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <TextBox.Text>
+                                    <Binding Path="CounterPeriod" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <DataErrorValidationRule/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
                             </TextBox>
 
                             <Line />
                             <TextBlock Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left"  Text="PWM Settings:"/>
                             <TextBlock Grid.Column="0" Grid.Row="5" Style="{StaticResource TextBlockStyle}" Text="Mode:"/>
-                            <ComboBox x:Name="gtPWMMode"  Style="{StaticResource TextBoxStyle}" Grid.Column="1" Grid.Row="5">
+                            <ComboBox x:Name="gtPWMMode" Style="{StaticResource TextBoxStyle}" Grid.Column="1" Grid.Row="5">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction
+                                            Command="{Binding GtFastModeChangeCommand}"
+                                            CommandParameter="SelectedItem"/>
+                                        <i:InvokeCommandAction
+                                            Command="{Binding GtCalculatePWMCommand}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                                 <TextBlock FontSize="12" Text="Mode 1"/>
                                 <TextBlock FontSize="12" Text="Mode 2"/>
                             </ComboBox>
                                 <TextBlock Grid.Column="0" Grid.Row="6" Style="{StaticResource TextBlockStyle}"  Text="Pulse:"/>
-                            <TextBox Grid.Column="1" Grid.Row="2" Style="{StaticResource TextBoxStyle}">
-
+                                <TextBox Grid.Column="1" Grid.Row="6" Style="{StaticResource TextBoxStyle}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="TextChanged">
+                                        <i:InvokeCommandAction
+                                            Command="{Binding GtCalculatePWMCommand}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <TextBox.Text>
+                                    <Binding Path="Pulse" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <DataErrorValidationRule/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
                             </TextBox>
 
                             <TextBlock Grid.Column="0" Grid.Row="7" Style="{StaticResource TextBlockStyle}"  Text="Битность:"/>
-                            <CheckBox x:Name="GTbitsCheckBocks"  Style="{StaticResource TextBoxStyle}" Grid.Column="4" Grid.Row="7" Content="32 Бит"/>
+                            <CheckBox x:Name="GTbitsCheckBocks"  Style="{StaticResource TextBoxStyle}" Grid.Column="4" Grid.Row="7" Content="32 Бит" Command="{Binding GtBitsChangeCommand}" CommandParameter="IsChecked"/>
                             
                             <TextBlock Grid.Column="0" Grid.Row="8" Style="{StaticResource TextBlockStyle}"  Text="Fast Mode:"/>
                             <ComboBox x:Name="gtFastMode" Style="{StaticResource TextBoxStyle}" Grid.Column="1" Grid.Row="8">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction
+                                            Command="{Binding GtFastModeChangeCommand}"
+                                            CommandParameter="SelectedItem"/>
+                                        <i:InvokeCommandAction
+                                            Command="{Binding GtCalculatePWMCommand}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                                 <TextBlock FontSize="12" Text="Disabled"/>
                                 <TextBlock FontSize="12" Text="Enabled"/>
                             </ComboBox>
 
                             <TextBlock Grid.Column="0" Grid.Row="9" Style="{StaticResource TextBlockStyle}"  Text="CH Polarity:"/>
-                            <ComboBox x:Name="gtPolaritycb"  Style="{StaticResource TextBoxStyle}" Grid.Column="1" Grid.Row="9">
+                            <ComboBox x:Name="gtPolaritycb" Style="{StaticResource TextBoxStyle}" Grid.Column="1" Grid.Row="9">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction
+                                            Command="{Binding GtPolarityChangeCommand}"
+                                            CommandParameter="SelectedItem"/>
+                                        <i:InvokeCommandAction
+                                            Command="{Binding GtCalculatePWMCommand}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                                 <TextBlock FontSize="12" Text="High"/>
                                 <TextBlock FontSize="12" Text="Low"/>
                             </ComboBox>
+
+                            <TextBlock Grid.Column="0" Grid.Row="11" Text="Заполнение:"  Style="{StaticResource TextBlockStyle}"/>
+                            <TextBox DataContext="{Binding GeneralTimer}" Grid.Column="1" x:Name="PWMResultTextBox" Grid.Row="11" IsReadOnly="True" Style="{StaticResource TextBoxStyle}">
+                                <TextBox.Text>
+                                    <Binding Path="Completion" Mode="OneWay" UpdateSourceTrigger="PropertyChanged">
+                                        
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
                         </Grid>
                     </TabItem.Content>
                 </TabItem>

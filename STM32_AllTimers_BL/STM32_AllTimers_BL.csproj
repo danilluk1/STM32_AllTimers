@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Model\BasicTimer.cs" />
     <Compile Include="Model\CHPolarity.cs" />
     <Compile Include="Model\CounterMode.cs" />
@@ -55,8 +56,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Commands\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
